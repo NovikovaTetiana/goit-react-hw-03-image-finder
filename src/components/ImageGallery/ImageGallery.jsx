@@ -79,9 +79,9 @@ export class ImageGallery extends Component {
           <Modal onClose={this.toggleModal} modalImg={modalImg} />
         )}
 
-        {/* {isShowBtn && <Button onClick={this.handleClickBtn}/> } */}
-
-        <Button onClick={this.handleClickBtn} />
+        {isShowBtn && <Button onClickBtn ={this.handleClickBtn}/> }
+{/* 
+        <Button onClickBtn ={this.handleClickBtn} /> */}
       </>
     );
   }
