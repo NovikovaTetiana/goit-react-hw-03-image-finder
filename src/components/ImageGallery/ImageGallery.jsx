@@ -12,7 +12,7 @@ export class ImageGallery extends Component {
     isLoading: false,
     isShowModal: false,
     modalImg: null,
-    alt: '',
+    tags: '',
     isShowBtn: false,
     page: 1,
   };
@@ -50,8 +50,9 @@ export class ImageGallery extends Component {
     }));
   };
 
-  onClickToGallery = (modalImg, alt) => {
-    this.setState({ modalImg, alt });
+  onClickToGallery = (modalImg, tags) => {
+    this.setState({ modalImg, tags });
+    //  console.log(modalImg)
   };
 
   render() {
@@ -68,6 +69,7 @@ export class ImageGallery extends Component {
                   key={image.id}
                   item={image}
                   onImageClick={this.onClickToGallery}
+                  onClick={this.toggleModal}
                 />
               );
             })}
@@ -77,7 +79,7 @@ export class ImageGallery extends Component {
           <Modal onClose={this.toggleModal} modalImg={modalImg} />
         )}
 
-        {/* {isShowBtn&&<Button onClick={this.handleClickBtn} /> } */}
+        {/* {isShowBtn && <Button onClick={this.handleClickBtn}/> } */}
 
         <Button onClick={this.handleClickBtn} />
       </>
