@@ -12,7 +12,6 @@ export class ImageGallery extends Component {
     isLoading: false,
     isShowModal: false,
     modalImg: null,
-    tags: '',
     isShowBtn: false,
     page: 1,
   };
@@ -29,7 +28,7 @@ export class ImageGallery extends Component {
         .then(images =>
           this.setState({
             images:
-              page <= 1 ? images.hits : [...prevState.images, ...images.hits],
+              page === 1 ? images.hits : [...prevState.images, ...images.hits],
             totalPages: Math.floor((images.totalHits / 12)),
           })
         )
@@ -39,7 +38,7 @@ export class ImageGallery extends Component {
         .finally(() => this.setState({ isLoading: false }));
     }
   }
-
+  
   handleClickBtn = () => {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   };
@@ -50,8 +49,8 @@ export class ImageGallery extends Component {
     }));
   };
 
-  onClickToGallery = (modalImg, tags) => {
-    this.setState({ modalImg, tags });
+  onClickToGallery = (modalImg) => {
+    this.setState({ modalImg });
   };
 
   render() {
@@ -66,7 +65,7 @@ export class ImageGallery extends Component {
               return (
                 <ImageGalleryItem
                   key={image.id}
-                  item={image}
+                  itemList={image}
                   onImageClick={this.onClickToGallery}
                   onClick={this.toggleModal}
                 />
