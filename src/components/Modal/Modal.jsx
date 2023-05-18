@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { Backdrop } from './Modal.styled';
+import { Backdrop, ModalStyle } from './Modal.styled';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 
@@ -26,13 +26,13 @@ export class Modal extends Component {
     }
   }
   render() {
-    const { children } = this.props.modalImg;
+    const { largeImageURL,  tags} = this.props.modalImg;
  
     return createPortal(
       <Backdrop onClick={this.handleClickBackdrop}>
-        <div>
-        {children}
-        </div>
+        <ModalStyle>
+        <img src={largeImageURL} alt={tags} />
+        </ModalStyle>
       </Backdrop>,
       modalRoot
     );
