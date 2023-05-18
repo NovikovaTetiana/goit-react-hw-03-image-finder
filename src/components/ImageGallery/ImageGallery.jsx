@@ -72,10 +72,8 @@ export class ImageGallery extends Component {
               );
             })}
         </Gallery>
-        
-        {isShowModal && (
-          <Modal onClose={this.toggleModal} modalImg={modalImg} />
-        )}
+     
+        {isShowModal && <Modal onClick={this.toggleModal} modalImg={modalImg} /> }
 
         {/* {isShowBtn && <Button onClickBtn ={this.handleClickBtn}/> } */}
 

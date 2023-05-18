@@ -22,11 +22,12 @@ export class Modal extends Component {
 
   handleClickBackdrop = e => {
     if (e.target === e.currentTarget) {
-      this.props.onClose();
+      this.props.onClick();
     }
+    console.log('object')
   }
   render() {
-    const { largeImageURL,  tags} = this.props.modalImg;
+    const { largeImageURL, tags} = this.props.modalImg;
  
     return createPortal(
       <Backdrop onClick={this.handleClickBackdrop}>
@@ -40,6 +41,6 @@ export class Modal extends Component {
 }
 
 Modal.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.array.isRequired,
   handleClickBackdrop: PropTypes.func.isRequired,
 };
