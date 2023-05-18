@@ -29,7 +29,7 @@ export class ImageGallery extends Component {
           this.setState({
             images:
               page === 1 ? images.hits : [...prevState.images, ...images.hits],
-            totalPages: Math.floor((images.totalHits / 12)),
+            totalPages: Math.floor(images.totalHits / 12),
           })
         )
         .catch(error => {
