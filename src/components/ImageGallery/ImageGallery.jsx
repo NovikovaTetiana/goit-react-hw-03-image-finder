@@ -52,7 +52,7 @@ export class ImageGallery extends Component {
 
   onClickToGallery = (modalImg, tags) => {
     this.setState({ modalImg, tags });
-    //  console.log(modalImg)
+     console.log(modalImg)
   };
 
   render() {
