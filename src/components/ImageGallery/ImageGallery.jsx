@@ -52,7 +52,6 @@ export class ImageGallery extends Component {
 
   onClickToGallery = (modalImg, tags) => {
     this.setState({ modalImg, tags });
-     console.log(modalImg)
   };
 
   render() {
@@ -79,9 +78,9 @@ export class ImageGallery extends Component {
           <Modal onClose={this.toggleModal} modalImg={modalImg} />
         )}
 
-        {isShowBtn && <Button onClickBtn ={this.handleClickBtn}/> }
-{/* 
-        <Button onClickBtn ={this.handleClickBtn} /> */}
+        {/* {isShowBtn && <Button onClickBtn ={this.handleClickBtn}/> } */}
+
+        <Button onClickBtn ={this.handleClickBtn} />
       </>
     );
   }
