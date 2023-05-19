@@ -54,7 +54,7 @@ export class ImageGallery extends Component {
   };
 
   render() {
-    const { images, isShowModal, modalImg, isLoading, isShowBtn } = this.state;
+    const { images, isShowModal, modalImg, isLoading} = this.state;
     return (
       <>
         {isLoading && <Loader visible={true} />}
