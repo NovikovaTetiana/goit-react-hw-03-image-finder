@@ -8,12 +8,13 @@ import { Loader } from 'components/Loader/Loader';
 
 export class ImageGallery extends Component {
   state = {
-    images: null,
+    images: [],
     isLoading: false,
     isShowModal: false,
     modalImg: null,
     isShowBtn: false,
     page: 1,
+    error: '',
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -23,25 +24,30 @@ export class ImageGallery extends Component {
       prevState.page !== page
     ) {
       this.setState({ isLoading: true });
+
+      console.log(this.props.searchText);
+
       getImages(this.props.searchText)
         .then(response => response.json())
-        .then(images =>
-          this.setState({
-            images:
-              page === 1 ? images.hits : [...prevState.images, ...images.hits],
-            totalPages: Math.floor(images.totalHits / 12),
-          })
+        .then((data) =>
+          this.setState(prevState => ({
+            images: [...prevState.images, ...data.hits],
+            // handleClickBtn: Math.floor(data.totalHits / 12),
+            // handleClickBtn:page < Math.ceil(data.totalHits / 12)
+            // handleClickBtn:Math.ceil(data.totalHits / 12)
+            // handleClickBtn:prevState.page < Math.ceil(data.totalHits / 12)
+            handleClickBtn:prevState.page < Math.floor(data.totalHits / 12)
+          }))
         )
-        .catch(error => {
-          this.setState({ error });
-        })
+        .catch(error => this.setState({ error }))
         .finally(() => this.setState({ isLoading: false }));
     }
   }
-  
+
   handleClickBtn = () => {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   };
+
 
   toggleModal = () => {
     this.setState(({ isShowModal }) => ({
@@ -49,7 +55,7 @@ export class ImageGallery extends Component {
     }));
   };
 
-  onClickToGallery = (modalImg) => {
+  onClickToGallery = modalImg => {
     this.setState({ modalImg });
   };
 
@@ -58,7 +64,10 @@ export class ImageGallery extends Component {
     return (
       <>
         {isLoading && <Loader visible={true} />}
-
+        {isShowModal && (
+          <Modal onClose={this.toggleModal} modalImg={modalImg} />
+        )}
+        {/* {isShowBtn && <Button onClickBtn ={this.handleClickBtn}/> } */}
         <Gallery>
           {images &&
             images.map(image => {
@@ -72,12 +81,8 @@ export class ImageGallery extends Component {
               );
             })}
         </Gallery>
-     
-        {isShowModal && <Modal onClose={this.toggleModal} modalImg={modalImg} /> }
 
-        {/* {isShowBtn && <Button onClickBtn ={this.handleClickBtn}/> } */}
-
-        <Button onClickBtn ={this.handleClickBtn} />
+        <Button onClickBtn={this.handleClickBtn} />
       </>
     );
   }

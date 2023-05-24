@@ -1,7 +1,6 @@
 import { Component } from 'react';
 import { Backdrop, ModalStyle } from './Modal.styled';
 import { createPortal } from 'react-dom';
-import PropTypes from 'prop-types';
 
 const modalRoot = document.querySelector('#modal-root');
 
@@ -40,7 +39,3 @@ export class Modal extends Component {
   }
 }
 
-Modal.propTypes = {
-  children: PropTypes.array.isRequired,
-  handleClickBackdrop: PropTypes.func.isRequired,
-};
