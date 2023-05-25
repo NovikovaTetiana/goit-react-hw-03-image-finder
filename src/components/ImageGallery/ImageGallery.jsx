@@ -9,10 +9,9 @@ import { Loader } from 'components/Loader/Loader';
 export class ImageGallery extends Component {
   state = {
     images: [],
+    currentImage:[],
     isLoading: false,
-    isShowModal: false,
     modalImg: null,
-    isShowBtn: false,
     page: 1,
     error: '',
   };
@@ -23,20 +22,14 @@ export class ImageGallery extends Component {
       prevProps.searchText !== this.props.searchText ||
       prevState.page !== page
     ) {
-      this.setState({ isLoading: true });
+      this.setState({ isLoading: true, });
 
-      console.log(this.props.searchText);
-
-      getImages(this.props.searchText)
+      getImages(this.props.searchText, page)
         .then(response => response.json())
-        .then((data) =>
+        .then(data =>
           this.setState(prevState => ({
-            images: [...prevState.images, ...data.hits],
-            // handleClickBtn: Math.floor(data.totalHits / 12),
-            // handleClickBtn:page < Math.ceil(data.totalHits / 12)
-            // handleClickBtn:Math.ceil(data.totalHits / 12)
-            // handleClickBtn:prevState.page < Math.ceil(data.totalHits / 12)
-            handleClickBtn:prevState.page < Math.floor(data.totalHits / 12)
+            images:[...prevState.images, ...data.hits],
+           
           }))
         )
         .catch(error => this.setState({ error }))
@@ -48,26 +41,17 @@ export class ImageGallery extends Component {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   };
 
-
-  toggleModal = () => {
-    this.setState(({ isShowModal }) => ({
-      isShowModal: !isShowModal,
-    }));
-  };
+  closeModal = () => this.setState({ modalImg: null });
 
   onClickToGallery = modalImg => {
     this.setState({ modalImg });
   };
 
   render() {
-    const { images, isShowModal, modalImg, isLoading} = this.state;
+    const { images, modalImg, isLoading } = this.state;
     return (
       <>
         {isLoading && <Loader visible={true} />}
-        {isShowModal && (
-          <Modal onClose={this.toggleModal} modalImg={modalImg} />
-        )}
-        {/* {isShowBtn && <Button onClickBtn ={this.handleClickBtn}/> } */}
         <Gallery>
           {images &&
             images.map(image => {
@@ -76,13 +60,13 @@ export class ImageGallery extends Component {
                   key={image.id}
                   itemList={image}
                   onImageClick={this.onClickToGallery}
-                  onClick={this.toggleModal}
                 />
               );
             })}
         </Gallery>
 
-        <Button onClickBtn={this.handleClickBtn} />
+        {images.length > 0 && <Button onClickBtn={this.handleClickBtn} />}
+        {modalImg && <Modal onClose={this.closeModal} modalImg={modalImg} />}
       </>
     );
   }
