@@ -12,7 +12,7 @@ export class App extends Component {
   };
 
  handleSearch = (searchText) =>{
-  this.setState({ searchText })
+  this.setState({ searchText})
  }
 
 

@@ -9,7 +9,7 @@ import { Loader } from 'components/Loader/Loader';
 export class ImageGallery extends Component {
   state = {
     images: [],
-    currentImage:[],
+    currrentPage: [],
     isLoading: false,
     modalImg: null,
     page: 1,
@@ -22,14 +22,13 @@ export class ImageGallery extends Component {
       prevProps.searchText !== this.props.searchText ||
       prevState.page !== page
     ) {
-      this.setState({ isLoading: true, });
+      this.setState({ isLoading: true, images: [] });
 
       getImages(this.props.searchText, page)
         .then(response => response.json())
         .then(data =>
           this.setState(prevState => ({
-            images:[...prevState.images, ...data.hits],
-           
+            images: [...prevState.images, ...data.hits],
           }))
         )
         .catch(error => this.setState({ error }))
