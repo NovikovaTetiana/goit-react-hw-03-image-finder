@@ -22,13 +22,14 @@ export class ImageGallery extends Component {
       prevProps.searchText !== this.props.searchText ||
       prevState.page !== page
     ) {
-      this.setState({ isLoading: true, images: [] });
+      this.setState({ isLoading: true });
 
       getImages(this.props.searchText, page)
         .then(response => response.json())
         .then(data =>
           this.setState(prevState => ({
             images: [...prevState.images, ...data.hits],
+            
           }))
         )
         .catch(error => this.setState({ error }))

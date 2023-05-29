@@ -5,11 +5,11 @@ import { toast } from 'react-toastify';
 
 export class Searchbar extends Component {
   state = {
-   value: ''
+   value: '', 
   };
 
   handleChange = ({ currentTarget: { value } }) => {
-    this.setState({ value: value.toLowerCase() });
+    this.setState({ value: value.toLowerCase()});
   };
 
   handleSubmit = event => {
