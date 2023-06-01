@@ -9,36 +9,46 @@ import { Loader } from 'components/Loader/Loader';
 export class ImageGallery extends Component {
   state = {
     images: [],
-    currrentPage: [],
     isLoading: false,
     modalImg: null,
-    page: 1,
+    currentPage: 1,
     error: '',
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    const { page } = this.state;
-    if (
-      prevProps.searchText !== this.props.searchText ||
-      prevState.page !== page
-    ) {
-      this.setState({ isLoading: true });
+  async componentDidUpdate(prevProps, prevState) {
+    const { currentPage } = this.state;
+    const { searchText, page } = this.props;
+    if (prevProps.searchText !== this.props.searchText) {
+      try {
+        this.setState({ isLoading: true, images: [] });
 
-      getImages(this.props.searchText, page)
-        .then(response => response.json())
-        .then(data =>
-          this.setState(prevState => ({
-            images: [...prevState.images, ...data.hits],
-            
-          }))
-        )
-        .catch(error => this.setState({ error }))
-        .finally(() => this.setState({ isLoading: false }));
+        const images = await getImages(searchText, page);
+        this.setState({
+          images: [...this.state.images, ...images.hits],
+          isLoading: false,
+        });
+      } catch (error) {
+        this.setState({ error: true, isLoading: false });
+      }
+    }
+
+    if (prevState.currentPage !== currentPage) {
+      try {
+        this.setState({ isLoading: true });
+
+        const images = await getImages(searchText, currentPage);
+        this.setState({
+          images: [...this.state.images, ...images.hits],
+          isLoading: false,
+        });
+      } catch (error) {
+        this.setState({ error: true, isLoading: false });
+      }
     }
   }
 
   handleClickBtn = () => {
-    this.setState(prevState => ({ page: prevState.page + 1 }));
+    this.setState(prevState => ({ currentPage: prevState.currentPage + 1 }));
   };
 
   closeModal = () => this.setState({ modalImg: null });
@@ -48,7 +58,7 @@ export class ImageGallery extends Component {
   };
 
   render() {
-    const { images, modalImg, isLoading } = this.state;
+    const { images, modalImg, isLoading, error } = this.state;
     return (
       <>
         {isLoading && <Loader visible={true} />}
@@ -64,7 +74,7 @@ export class ImageGallery extends Component {
               );
             })}
         </Gallery>
-
+        {error && <p>Ой! Щось пішло не так... Перезавантажте сторінку!</p>}
         {images.length > 0 && <Button onClickBtn={this.handleClickBtn} />}
         {modalImg && <Modal onClose={this.closeModal} modalImg={modalImg} />}
       </>
